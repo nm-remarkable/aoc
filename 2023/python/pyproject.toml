@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "advent-of-code-2023"
+description = "Solutions to https://adventofcode.com/2023"
+version = "0.0.1"
+authors = ["Nuno Mendes"]
+maintainers = ["Nuno Mendes"]
+packages = [{ include = "days" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ruff = "^0.1.8"
+poetry = "^1.7.1"
+pre-commit = "^3.6.0"
+
+[tool.poetry.scripts]
+advent = "advent:execute"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+select = ["ALL"]
+
+ignore = ["D", "G004", "INP001", "ERA001"]
+
+target-version = "py311"
+
+[tool.ruff.mccabe]
+max-complexity = 5
