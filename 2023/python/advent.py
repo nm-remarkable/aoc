@@ -31,13 +31,12 @@ def execute() -> None:
     logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
 
     directory = Path(__file__).parent / "days"
-    challenges = list(directory.glob("**/*"))
+    challenges = list(directory.glob("**/*.py"))
 
     solution = ""
     for c in challenges:
         if c.stem == args.n:
             module = importfile(c.as_posix())
-            logger.critical(module)
             solution = module.main()
 
     if not solution:
