@@ -7,7 +7,7 @@ numbers = r"one|two|three|four|five|six|seven|eight|nine"
 digit = r"\d" + r"|"
 
 
-def intify(number: str) -> int:
+def intify(number: str) -> int:  # noqa: PLR0911
     match number:
         case "one":
             return 1

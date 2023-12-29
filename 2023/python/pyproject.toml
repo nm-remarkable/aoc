@@ -28,4 +28,4 @@ ignore = ["D", "G004", "INP001", "ERA001"]
 target-version = "py311"
 
 [tool.ruff.mccabe]
-max-complexity = 7
+max-complexity = 6
