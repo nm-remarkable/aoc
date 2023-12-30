@@ -32,7 +32,7 @@ func intify(number string) (int, error) {
 	return strconv.Atoi(number)
 }
 
-func MatchDigit(input string, reverse bool) string {
+func MatchDigit(input string, reverse bool) (string, error) {
 	line := []rune(input) // Reverse works on the reference, so we need to assign line to variable
 	numbers := []rune(`one|two|three|four|five|six|seven|eight|nine`)
 	digits := `\d` + `|`
@@ -49,9 +49,9 @@ func MatchDigit(input string, reverse bool) string {
 	}
 	digit, err := intify(string(match))
 	if err != nil {
-		panic("Cannot intify: " + err.Error())
+		return "", fmt.Errorf("cannot convert to integer: %v", err)
 	}
-	return fmt.Sprintf("%d", digit)
+	return fmt.Sprintf("%d", digit), nil
 }
 
 func (d DayOne) Solve() (string, error) {
@@ -70,8 +70,14 @@ func (d DayOne) Solve() (string, error) {
 	sum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		first_match := MatchDigit(line, false)
-		last_match := MatchDigit(line, true)
+		first_match, err := MatchDigit(line, false)
+		if err != nil {
+			return "", err
+		}
+		last_match, err := MatchDigit(line, true)
+		if err != nil {
+			return "", err
+		}
 
 		add, err := strconv.Atoi(first_match + last_match)
 		if err != nil {
