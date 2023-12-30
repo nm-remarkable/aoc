@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strconv"
 
 	advent "advent/days"
@@ -32,8 +31,6 @@ func main() {
 
 func parseArgs() (int, error) {
 	args := os.Args[1:]
-	exePath := filepath.Base(os.Args[0])
-	fmt.Printf("Executing: %s %v\n", exePath, args)
 
 	if len(args) == 1 {
 		day, err := strconv.Atoi(args[0])
@@ -43,6 +40,6 @@ func parseArgs() (int, error) {
 		}
 		return day, nil
 	}
-	e := fmt.Sprintf("Wrong arguments, example: %s [Day] --debug", exePath)
+	e := fmt.Sprintf("You must provide a [Day] argument. Example: `go run . [Day]`")
 	return 0, errors.New(e)
 }
