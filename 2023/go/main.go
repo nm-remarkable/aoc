@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-	InterruptExecutionSignal()
 	adventDay, err := parseArgs()
 	if err != nil {
 		panic(err)
@@ -51,13 +50,4 @@ func parseArgs() (int, error) {
 	}
 	e := fmt.Sprintf("Wrong arguments, example: %s [Day] --debug", exePath)
 	return 0, errors.New(e)
-}
-
-func InterruptExecutionSignal() {
-	signalChannel := make(chan os.Signal, 1)
-	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-signalChannel
-		log.Fatalln("Program execution was interrupted, bye!!!")
-	}()
 }
