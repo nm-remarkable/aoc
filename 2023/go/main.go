@@ -3,13 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
-	"log/slog"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strconv"
-	"syscall"
 
 	advent "advent/days"
 )
@@ -19,7 +15,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	slog.Info(fmt.Sprintf("Solving day: %d", adventDay))
 
 	var solver advent.DaySolver
 	switch adventDay {
@@ -38,7 +33,7 @@ func main() {
 func parseArgs() (int, error) {
 	args := os.Args[1:]
 	exePath := filepath.Base(os.Args[0])
-	slog.Debug(fmt.Sprintf("Executing: %s %v", exePath, args))
+	fmt.Printf("Executing: %s %v\n", exePath, args)
 
 	if len(args) == 1 {
 		day, err := strconv.Atoi(args[0])
