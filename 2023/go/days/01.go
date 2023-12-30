@@ -13,29 +13,23 @@ import (
 type DayOne struct {
 }
 
+var wordToNumber = map[string]int{
+	"one":   1,
+	"two":   2,
+	"three": 3,
+	"four":  4,
+	"five":  5,
+	"six":   6,
+	"seven": 7,
+	"eight": 8,
+	"nine":  9,
+}
+
 func intify(number string) (int, error) {
-	switch number {
-	case "one":
-		return 1, nil
-	case "two":
-		return 2, nil
-	case "three":
-		return 3, nil
-	case "four":
-		return 4, nil
-	case "five":
-		return 5, nil
-	case "six":
-		return 6, nil
-	case "seven":
-		return 7, nil
-	case "eight":
-		return 8, nil
-	case "nine":
-		return 9, nil
-	default:
-		return strconv.Atoi(number)
+	if val, ok := wordToNumber[number]; ok {
+		return val, nil
 	}
+	return strconv.Atoi(number)
 }
 
 func MatchDigit(input string, reverse bool) string {
