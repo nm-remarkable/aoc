@@ -29,7 +29,11 @@ func main() {
 	case 2:
 		solver = advent.DayTwo{}
 	}
-	fmt.Println(solver.Solve())
+	solution, err := solver.Solve()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Solution for day %d is: %s\n", adventDay, solution)
 }
 
 func parseArgs() (int, error) {
