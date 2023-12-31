@@ -1,3 +1,5 @@
+mod days;
+
 use clap::Parser;
 use log::{debug, info};
 use simplelog::{Config, LevelFilter, SimpleLogger};
@@ -27,4 +29,5 @@ fn main() {
 
     debug!("[DEBUG]");
     info!("Running advent challenge {}!", args.day);
+    days::r01::solve();
 }
