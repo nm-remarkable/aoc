@@ -1,1 +1,1 @@
-pub mod executable;
+pub mod challenge;
