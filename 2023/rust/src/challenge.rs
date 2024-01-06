@@ -1,3 +1,4 @@
+use anyhow::Result;
 use clap::Parser;
 use log::{debug, info};
 use simplelog::{Config, LevelFilter, SimpleLogger};
@@ -10,13 +11,17 @@ struct Args {
 }
 
 pub trait Challenge {
-    fn execute(&self, file_name: &str) {
-        self.setup(file_name);
-        info!("{}", self.solve())
+
     #[track_caller]
     fn execute(&self) {
         self.setup(Location::caller().file());
+
+        match self.solve() {
+            Err(why) => panic!("{:?}", why),
+            Ok(solution) => info!("{}", solution),
+        }
     }
+
     fn setup(&self, file_name: &str) {
         let args = Args::parse();
 
@@ -30,5 +35,6 @@ pub trait Challenge {
         debug!("[DEBUG]");
         info!("Running advent challenge {}!", file_name);
     }
-    fn solve(&self) -> &str;
+
+    fn solve(&self) -> Result<&str>;
 }
