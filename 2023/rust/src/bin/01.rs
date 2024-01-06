@@ -10,5 +10,5 @@ impl Challenge for Day01 {
 
 pub fn main() {
     let day = Day01 {};
-    day.execute(file!())
+    day.execute();
 }

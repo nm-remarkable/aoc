@@ -1,6 +1,7 @@
 use clap::Parser;
 use log::{debug, info};
 use simplelog::{Config, LevelFilter, SimpleLogger};
+use std::panic::Location;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -12,6 +13,9 @@ pub trait Challenge {
     fn execute(&self, file_name: &str) {
         self.setup(file_name);
         info!("{}", self.solve())
+    #[track_caller]
+    fn execute(&self) {
+        self.setup(Location::caller().file());
     }
     fn setup(&self, file_name: &str) {
         let args = Args::parse();
