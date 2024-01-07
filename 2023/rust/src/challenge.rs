@@ -35,5 +35,5 @@ pub trait Challenge {
         info!("Running advent challenge {}!", file_name);
     }
 
-    fn solve(&self) -> Result<&str>;
+    fn solve(&self) -> Result<String>;
 }
