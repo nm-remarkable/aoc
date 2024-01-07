@@ -11,7 +11,6 @@ struct Args {
 }
 
 pub trait Challenge {
-
     #[track_caller]
     fn execute(&self) {
         self.setup(Location::caller().file());

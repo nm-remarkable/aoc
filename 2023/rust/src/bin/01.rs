@@ -1,13 +1,11 @@
 use anyhow::{anyhow, Result};
 use log::debug;
 use std::{fs, path::PathBuf};
-
 use advent::challenge::Challenge;
-
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-fn word_to_number() -> &'static HashMap<&'static str, u32> {
+fn hashmap() -> &'static HashMap<&'static str, u32> {
     static HASHMAP: OnceLock<HashMap<&str, u32>> = OnceLock::new();
     HASHMAP.get_or_init(|| {
         let hmap: HashMap<&str, u32> = [
@@ -26,6 +24,31 @@ fn word_to_number() -> &'static HashMap<&'static str, u32> {
         .collect();
         hmap
     })
+}
+    /// Parses a string into an int. Supports words for digits.
+    /// Test won't run because of https://github.com/rust-lang/cargo/issues/5477
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let four: u32 = "4".intify()?;
+    /// assert_eq!(4, 4);
+    ///
+    /// let four = "four".intify()?;
+    /// assert_eq!(4, 4);
+    ///
+    /// let nope = "john smith".intify();
+    /// assert!(nope.is_err());
+    /// ```
+fn intify(number: &str) -> Result<u32> {
+    // Map has the value we are searching for
+    if let Some(n) = hashmap().get(number) {
+        return Ok(n.to_owned());
+    }
+
+    // Map does not have the value, so it must be an int
+    number.parse::<u32>()
+        .map_err(|err| anyhow!(err))
 }
 
 struct Day01;
