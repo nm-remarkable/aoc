@@ -37,3 +37,22 @@ pub trait Challenge {
 
     fn solve(&self) -> Result<String>;
 }
+
+#[cfg(test)]
+mod test {
+    use super::Challenge;
+    use anyhow::Result;
+
+    struct X;
+    impl Challenge for X {
+        fn solve(&self) -> Result<String> {
+            Ok(format!("{}", 1234))
+        }
+    }
+
+    #[test]
+    fn test_interface() {
+        let t = X {};
+        t.execute();
+    }
+}

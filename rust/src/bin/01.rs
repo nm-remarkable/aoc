@@ -35,13 +35,15 @@ fn hashmap() -> &'static HashMap<&'static str, u32> {
 /// # Examples
 ///
 /// ```
-/// let four: u32 = "4".intify()?;
-/// assert_eq!(4, 4);
+/// let four = intify("4");
+/// assert!(four.is_ok());
+/// assert_eq!(four.unwrap(), 4);
 ///
-/// let four = "four".intify()?;
-/// assert_eq!(4, 4);
+/// let four_again = intify("four");
+/// assert!(four_again.is_ok());
+/// assert_eq!(four_again.unwrap(), 4);
 ///
-/// let nope = "john smith".intify();
+/// let nope = intify("john smith");
 /// assert!(nope.is_err());
 /// ```
 fn intify(number: &str) -> Result<u32> {
@@ -100,4 +102,23 @@ impl Challenge for Day01 {
 pub fn main() {
     let day = Day01 {};
     day.execute();
+}
+
+#[cfg(test)]
+mod test {
+    use super::intify;
+
+    #[test]
+    fn test_infify() {
+        let four = intify("4");
+        assert!(four.is_ok());
+        assert_eq!(four.unwrap(), 4);
+
+        let four_again = intify("four");
+        assert!(four_again.is_ok());
+        assert_eq!(four_again.unwrap(), 4);
+
+        let nope = intify("john smith");
+        assert!(nope.is_err());
+    }
 }
