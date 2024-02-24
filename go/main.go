@@ -6,10 +6,16 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/mattn/go-colorable"
+	"github.com/sirupsen/logrus"
+
 	advent "advent/days"
 )
 
 func main() {
+	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
+	logrus.SetOutput(colorable.NewColorableStdout())
+
 	adventDay, err := parseArgs()
 	if err != nil {
 		panic(err)
@@ -21,12 +27,15 @@ func main() {
 		solver = advent.DayOne{}
 	case 2:
 		solver = advent.DayTwo{}
+	default:
+		e := fmt.Sprintf("Day %d does not exist", adventDay)
+		panic(e)
 	}
 	solution, err := solver.Solve()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Solution for day %d is: %s\n", adventDay, solution)
+	logrus.Infof("Solution for day %d is: %s\n", adventDay, solution)
 }
 
 func parseArgs() (int, error) {
@@ -35,11 +44,11 @@ func parseArgs() (int, error) {
 	if len(args) == 1 {
 		day, err := strconv.Atoi(args[0])
 		if err != nil {
-			e := fmt.Sprintf("Positional argument could not be converted to int (ex: 01, 02, 03)")
+			e := fmt.Sprint("Positional argument could not be converted to int (ex: 01, 02, 03)")
 			return 0, errors.New(e)
 		}
 		return day, nil
 	}
-	e := fmt.Sprintf("You must provide a [Day] argument. Example: `go run . [Day]`")
+	e := fmt.Sprint("You must provide a [Day] argument. Example: `go run . [Day]`")
 	return 0, errors.New(e)
 }
