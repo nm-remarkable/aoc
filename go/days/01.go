@@ -3,8 +3,6 @@ package advent
 import (
 	"bufio"
 	"fmt"
-	"os"
-	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
@@ -55,14 +53,7 @@ func MatchDigit(input string, reverse bool) (string, error) {
 }
 
 func (d DayOne) Solve() (string, error) {
-
-	wd, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-	inputFile := filepath.Join(filepath.Dir(wd), "resources", "input-01.txt")
-
-	f, err := os.Open(inputFile)
+	f, err := getResource("input-01.txt")
 	if err != nil {
 		return "", err
 	}
@@ -70,16 +61,16 @@ func (d DayOne) Solve() (string, error) {
 	sum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		first_match, err := MatchDigit(line, false)
+		firstMatch, err := MatchDigit(line, false)
 		if err != nil {
 			return "", err
 		}
-		last_match, err := MatchDigit(line, true)
+		lastMatch, err := MatchDigit(line, true)
 		if err != nil {
 			return "", err
 		}
 
-		add, err := strconv.Atoi(first_match + last_match)
+		add, err := strconv.Atoi(firstMatch + lastMatch)
 		if err != nil {
 			return "", err
 		}
