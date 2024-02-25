@@ -83,7 +83,7 @@ impl Challenge for Day01 {
             .ancestors()
             .nth(4)
             .ok_or(anyhow!("Cannot find parents of {:?}", exe_file))
-            .map(|parent| parent.join("resources").join("input-01.txt"))?;
+            .map(|parent| parent.join("resources").join("01").join("input.txt"))?;
         debug!("path: {}", path.display());
 
         let mut sum = 0;

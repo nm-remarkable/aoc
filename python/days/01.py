@@ -1,4 +1,5 @@
 import re
+import sys
 from pathlib import Path
 
 from utils.logger import logger
@@ -26,7 +27,9 @@ def intify(number: str) -> int:
 
 
 def main() -> int:
-    input_file = Path(__file__).parent / "resources" / "input.01.txt"
+    input_file = Path(__file__).parents[2] / "resources" / "01" / "input.txt"
+    if not input_file.exists():
+        sys.exit(f"Could not find resource file: {input_file.as_posix()}")
 
     solution = 0
     with input_file.open("r") as f:
