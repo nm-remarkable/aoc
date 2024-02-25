@@ -53,7 +53,7 @@ func MatchDigit(input string, reverse bool) (string, error) {
 }
 
 func (d DayOne) Solve() (string, error) {
-	f, err := getResource("01")
+	f, err := getResource()
 	if err != nil {
 		return "", err
 	}
