@@ -1,6 +1,7 @@
 package advent
 
 import (
+	"bufio"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -58,5 +59,34 @@ func (bag RGBag) gameIsValid(game string) (bool, error) {
 }
 
 func (d DayTwo) Solve() (string, error) {
-	return "Solved Day 2!", nil
+	bag := RGBag{12, 13, 14}
+	f, err := getResource()
+	if err != nil {
+		return "", err
+	}
+	scanner := bufio.NewScanner(f)
+	sum := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		games := strings.Split(line, ":")
+
+		isValid, err := bag.gameIsValid(games[1])
+		if err != nil {
+			return "", nil
+		}
+		if isValid {
+			re := regexp.MustCompile(`\w+\s+(\d+)`)
+			match := re.FindStringSubmatch(games[0])
+			if len(match) <= 0 {
+				return "", fmt.Errorf("did not match string %s", games[0])
+			}
+			gameNumber, err := strconv.Atoi(match[1])
+			if err != nil {
+				return "", err
+			}
+			sum += gameNumber
+		}
+
+	}
+	return fmt.Sprint(sum), nil
 }
