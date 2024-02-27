@@ -1,35 +1,59 @@
 package advent
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestMatchDigit(t *testing.T) {
-	str1 := "dvbjrbsixf4thre51oneightts7p"
-	e1 := "6"
-	if r1, err := MatchDigit(str1, false); err != nil || e1 != r1 {
-		t.Fatalf(`First: Expected %s, got %s`, e1, r1)
+	t.Parallel()
+	tests := []struct {
+		name    string
+		input   string
+		reverse bool
+		expect  string
+	}{
+		{
+			name:    "Left match numbered word",
+			input:   "dvbjrbsixf4thre51oneightts7p",
+			reverse: false,
+			expect:  "6",
+		},
+		{
+			name:    "Right match digit",
+			input:   "dvbjrbsixf4thre51oneightts7p",
+			reverse: true,
+			expect:  "7",
+		},
+		{
+			name:    "Left match digit",
+			input:   "dvbbjrbfjsxffnjlhfdq2three51oneighttsp",
+			reverse: false,
+			expect:  "2",
+		},
+		{
+			name:    "Left match (nineight)",
+			input:   "dvbbjrbfjsnineighthree51oneighttsp",
+			reverse: false,
+			expect:  "9",
+		},
+		{
+			name:    "Right match (oneight = 8)",
+			input:   "dvbbjrbfjsxffnjlhfdqthree51oneighttsp",
+			reverse: true,
+			expect:  "8",
+		},
 	}
-
-	e2 := "7"
-	if r2, err := MatchDigit(str1, true); err != nil || e2 != r2 {
-		t.Fatalf(`Last: Expected %s, got %s`, e2, r2)
-	}
-
-	str2 := "dvbbjrbfjsxffnjlhfdqthree51oneighttsp"
-
-	e3 := "3"
-	if r3, err := MatchDigit(str2, false); err != nil || e3 != r3 {
-		t.Fatalf(`First: Expected %s, got %s`, e3, r3)
-	}
-
-	e4 := "8"
-	if r4, err := MatchDigit(str2, true); err != nil || e4 != r4 {
-		t.Fatalf(`Last: Expected %s, got %s`, e4, r4)
-	}
-
-	// Make sure the string we send is not modified
-	if r5, err := MatchDigit(str2, false); err != nil || e3 != r5 {
-		t.Fatalf(`First: Expected %s, got %s`, e3, r5)
+	testFunc := MatchDigit
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			n, err := testFunc(tt.input, tt.reverse)
+			require.NoError(t, err)
+			require.Equal(t, tt.expect, n, fmt.Sprintf(`Expected %s, got %s`, tt.input, n))
+		})
 	}
 }
