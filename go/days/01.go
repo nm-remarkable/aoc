@@ -52,7 +52,7 @@ func MatchDigit(input string, reverse bool) (string, error) {
 	return fmt.Sprintf("%d", digit), nil
 }
 
-func (d DayOne) Solve() (string, error) {
+func (d DayOne) First() (string, error) {
 	f, err := getResource()
 	if err != nil {
 		return "", err
@@ -77,4 +77,8 @@ func (d DayOne) Solve() (string, error) {
 		sum += add
 	}
 	return fmt.Sprintf("%d", sum), nil
+}
+
+func (d DayOne) Second() (string, error) {
+	return d.First()
 }

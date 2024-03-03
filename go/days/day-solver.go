@@ -9,7 +9,8 @@ import (
 )
 
 type DaySolver interface {
-	Solve() (string, error)
+	First() (string, error)
+	Second() (string, error)
 }
 
 func getResource() (*os.File, error) {

@@ -58,7 +58,7 @@ func (bag RGBag) gameIsValid(game string) (bool, error) {
 	return true, nil
 }
 
-func (d DayTwo) Solve() (string, error) {
+func (d DayTwo) First() (string, error) {
 	bag := RGBag{12, 13, 14}
 	f, err := getResource()
 	if err != nil {
@@ -89,4 +89,8 @@ func (d DayTwo) Solve() (string, error) {
 
 	}
 	return fmt.Sprint(sum), nil
+}
+
+func (d DayTwo) Second() (string, error) {
+	return "", fmt.Errorf("Not solved")
 }
