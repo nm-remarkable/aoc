@@ -1,10 +1,7 @@
 package advent
 
 import (
-	"fmt"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestMatchDigit(t *testing.T) {
@@ -52,8 +49,12 @@ func TestMatchDigit(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			n, err := testFunc(tt.input, tt.reverse)
-			require.NoError(t, err)
-			require.Equal(t, tt.expect, n, fmt.Sprintf(`Expected %s, got %s`, tt.input, n))
+			if err != nil {
+				t.Errorf("Error: %s", err)
+			}
+			if tt.expect != n {
+				t.Errorf("Expected %s, got %s", tt.expect, n)
+			}
 		})
 	}
 }

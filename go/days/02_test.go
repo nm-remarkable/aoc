@@ -3,8 +3,6 @@ package advent
 import (
 	"reflect"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestCanHaveResult(t *testing.T) {
@@ -61,8 +59,12 @@ func TestCanHaveResult(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			canExist, err := testFunc(tt.given)
-			require.Equal(t, canExist, tt.expect)
-			require.Equal(t, tt.err, err != nil)
+			if tt.expect != canExist {
+				t.Errorf("Expected: %t, got %t", tt.expect, canExist)
+			}
+			if tt.err != (err != nil) {
+				t.Errorf("Error: %s", err)
+			}
 		})
 	}
 }
@@ -132,7 +134,9 @@ func TestMinimum(t *testing.T) {
 			if !reflect.DeepEqual(minimum, tt.expect) {
 				t.Errorf("unexpected value: %+v, expected: %+v", minimum, tt.expect)
 			}
-			require.Equal(t, tt.err, err != nil)
+			if tt.err != (err != nil) {
+				t.Errorf("Error: %s", err)
+			}
 		})
 	}
 }
