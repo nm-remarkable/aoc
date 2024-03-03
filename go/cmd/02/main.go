@@ -1,6 +1,7 @@
-package advent
+package main
 
 import (
+	"advent/advent"
 	"bufio"
 	"fmt"
 	"regexp"
@@ -60,7 +61,7 @@ func (bag RGBag) gameIsValid(game string) (bool, error) {
 
 func (d DayTwo) First() (string, error) {
 	bag := RGBag{12, 13, 14}
-	f, err := getResource()
+	f, err := advent.GetResource()
 	if err != nil {
 		return "", err
 	}
@@ -140,7 +141,7 @@ func (b RGBag) multiply() int {
 func (d DayTwo) Second() (string, error) {
 	var sum int
 
-	f, err := getResource()
+	f, err := advent.GetResource()
 	if err != nil {
 		return "", err
 	}
@@ -156,4 +157,8 @@ func (d DayTwo) Second() (string, error) {
 		sum += result.multiply()
 	}
 	return fmt.Sprint(sum), nil
+}
+
+func main() {
+	advent.Challenge(DayTwo{})
 }

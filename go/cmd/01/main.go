@@ -1,6 +1,7 @@
-package advent
+package main
 
 import (
+	"advent/advent"
 	"bufio"
 	"fmt"
 	"regexp"
@@ -53,7 +54,7 @@ func MatchDigit(input string, reverse bool) (string, error) {
 }
 
 func (d DayOne) First() (string, error) {
-	f, err := getResource()
+	f, err := advent.GetResource()
 	if err != nil {
 		return "", err
 	}
@@ -81,4 +82,8 @@ func (d DayOne) First() (string, error) {
 
 func (d DayOne) Second() (string, error) {
 	return d.First()
+}
+
+func main() {
+	advent.Challenge(DayOne{})
 }
