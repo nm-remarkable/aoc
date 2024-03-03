@@ -91,6 +91,69 @@ func (d DayTwo) First() (string, error) {
 	return fmt.Sprint(sum), nil
 }
 
+func minimum(game string) (RGBag, error) {
+	var bag RGBag
+	matches := strings.Split(game, ";") // Separate each match from a game result
+	re := regexp.MustCompile(`(\d+)\s(\w+)`)
+
+	for _, m := range matches {
+		colors := strings.Split(m, ",") // Separate each ball from the match result
+
+		for _, c := range colors {
+			match := re.FindStringSubmatch(c)
+			if len(match) <= 0 {
+				return bag, fmt.Errorf("did not match string %s", game)
+			}
+
+			// Convert number of balls to number
+			count, err := strconv.Atoi(match[1])
+			if err != nil {
+				return bag, err
+			}
+			// If the number of balls with a certain color is higher than the allowed
+			// it´s impossible for this match to have the result given
+			switch match[2] {
+			case "red":
+				if bag.red < count {
+					bag.red = count
+				}
+			case "green":
+				if bag.green < count {
+					bag.green = count
+				}
+			case "blue":
+				if bag.blue < count {
+					bag.blue = count
+				}
+			default:
+				return bag, fmt.Errorf("should never end up in default case for rgb")
+			}
+		}
+	}
+	return bag, nil
+}
+
+func (b RGBag) multiply() int {
+	return b.red * b.green * b.blue
+}
+
 func (d DayTwo) Second() (string, error) {
-	return "", fmt.Errorf("Not solved")
+	var sum int
+
+	f, err := getResource()
+	if err != nil {
+		return "", err
+	}
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
+		games := strings.Split(line, ":")
+
+		result, err := minimum(games[1])
+		if err != nil {
+			return "", nil
+		}
+		sum += result.multiply()
+	}
+	return fmt.Sprint(sum), nil
 }

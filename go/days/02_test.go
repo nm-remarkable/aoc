@@ -1,6 +1,7 @@
 package advent
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -61,6 +62,76 @@ func TestCanHaveResult(t *testing.T) {
 			t.Parallel()
 			canExist, err := testFunc(tt.given)
 			require.Equal(t, canExist, tt.expect)
+			require.Equal(t, tt.err, err != nil)
+		})
+	}
+}
+
+func TestMinimum(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name   string
+		given  string
+		expect RGBag
+		err    bool
+	}{
+		{
+			given:  "3 blue, 4 red",
+			expect: RGBag{4, 0, 3},
+			err:    false,
+		},
+		{
+			given:  "1 red, 2 green, 6 blue",
+			expect: RGBag{1, 2, 6},
+			err:    false,
+		},
+		{
+			given:  "1 red, 11 green, 6 blue",
+			expect: RGBag{1, 11, 6},
+			err:    false,
+		},
+		{
+			given:  "1 red; 1 green; 1 blue",
+			expect: RGBag{1, 1, 1},
+			err:    false,
+		},
+		{
+			given:  "1 red; 2 red; 3 red; 1 blue",
+			expect: RGBag{3, 0, 1},
+			err:    false,
+		},
+		{
+			given:  "1 red, 2 green; 2 red, 1 green",
+			expect: RGBag{2, 2, 0},
+			err:    false,
+		},
+		{
+			given:  "100 red",
+			expect: RGBag{100, 0, 0},
+			err:    false,
+		},
+		{
+			given:  "fnaoisndiasnda",
+			expect: RGBag{},
+			err:    true,
+		},
+		{
+			given:  "100 apples",
+			expect: RGBag{},
+			err:    true,
+		},
+	}
+
+	testFunc := minimum
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.given, func(t *testing.T) {
+			t.Parallel()
+			minimum, err := testFunc(tt.given)
+			if !reflect.DeepEqual(minimum, tt.expect) {
+				t.Errorf("unexpected value: %+v, expected: %+v", minimum, tt.expect)
+			}
 			require.Equal(t, tt.err, err != nil)
 		})
 	}
