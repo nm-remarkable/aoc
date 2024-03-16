@@ -14,10 +14,13 @@ type DayThree struct {
 }
 
 type PartNumber struct {
-	row      int
-	value    int
-	position []int
-	valid    bool
+	row, value int
+	position   []int
+	valid      bool
+}
+
+type Symbol struct {
+	x, y int
 }
 
 var symbols = make(map[int][]int)
@@ -63,6 +66,21 @@ func validatePart(p PartNumber) bool {
 	return false
 }
 
+func validateGear(p PartNumber) (Symbol, error) {
+	for i := p.row - 1; i <= p.row+1; i++ {
+		if symbolRow, ok := symbols[i]; ok {
+			for j := p.position[0]; j <= p.position[1]+1; j++ {
+				for _, s := range symbolRow {
+					if s == j {
+						return Symbol{i, j}, nil
+					}
+				}
+			}
+		}
+	}
+	return Symbol{}, fmt.Errorf("this should have been an optional")
+}
+
 func (d DayThree) First() (string, error) {
 	f, err := advent.GetResource()
 	if err != nil {
@@ -79,7 +97,36 @@ func (d DayThree) First() (string, error) {
 }
 
 func (d DayThree) Second() (string, error) {
-	return "Nop", nil
+	f, err := advent.GetResource()
+	if err != nil {
+		return "", err
+	}
+	parseData(f)
+	gears := make(map[Symbol][]PartNumber, 0)
+	for _, p := range parts {
+		if s, err := validateGear(p); err == nil {
+
+			if _, ok := gears[s]; !ok {
+				gears[s] = []PartNumber{}
+			}
+			gears[s] = append(gears[s], p)
+		}
+	}
+
+	sum := 0
+	for _, g := range gears {
+		inner_sum := 1
+		if len(g) < 2 {
+			continue
+		}
+		for _, p := range g {
+			inner_sum *= p.value
+		}
+		sum += inner_sum
+		inner_sum = 1
+	}
+
+	return fmt.Sprint(sum), nil
 }
 
 func main() {
