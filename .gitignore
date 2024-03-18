@@ -1,3 +1,11 @@
+# vscode
 .vscode
-.ruff_cache
+# project
 resources
+
+# python
+.ruff_cache
+
+# zig
+zig-cache
+zig-out
