@@ -1,4 +1,5 @@
 #include <iostream>
+#include <print>
 
 namespace advent
 {
@@ -10,11 +11,7 @@ namespace advent
         Printer(const int id) : m_id(id) {}
         void print(const std::string &message)
         {
-            std::cout << message
-                      << "\n"
-                      << "Print id: "
-                      << m_id
-                      << std::endl;
+            std::printf("{}, \nPrint id: {}", message, m_id);
         }
 
     private:
