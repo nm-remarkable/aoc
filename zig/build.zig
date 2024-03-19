@@ -31,6 +31,14 @@ pub fn build(b: *std.Build) !void {
     }
     defer allocator.free(exePath);
 
+    const lib = b.addStaticLibrary(.{
+        .name = "advent",
+        .root_source_file = .{ .path = "lib/challenge.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    b.installArtifact(lib);
+
     // build system
     const advent = b.addExecutable(.{
         .name = "advent",
@@ -38,6 +46,9 @@ pub fn build(b: *std.Build) !void {
         .target = target,
         .optimize = optimize,
     });
+    advent.root_module.addImport("advent", b.createModule(.{
+        .root_source_file = .{ .path = "lib/challenge.zig" },
+    }));
     b.installArtifact(advent);
 
     const run_cmd = b.addRunArtifact(advent);
