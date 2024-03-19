@@ -11,10 +11,7 @@ pub fn build(b: *std.Build) !void {
     // Run different executables based on the day
     const options = b.addOptions();
     const day = b.option(u8, "day", "advent day") orelse 1;
-    const partOption = b.option(u8, "part", "part 1 or 2?") orelse 1;
-    const part1 = if (partOption == 1) true else false;
     options.addOption(u8, "day", day);
-    options.addOption(bool, "part1", part1);
 
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
@@ -41,7 +38,6 @@ pub fn build(b: *std.Build) !void {
         .target = target,
         .optimize = optimize,
     });
-    advent.root_module.addOptions("options", options);
     b.installArtifact(advent);
 
     const run_cmd = b.addRunArtifact(advent);
