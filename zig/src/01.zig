@@ -1,16 +1,30 @@
 const std = @import("std");
-const advent = @import("advent");
+const Challenge = @import("advent::challenge").Challenge;
+const number = @import("advent::number");
 
 const Day = struct {
-    fn firstPart() []const u8 {
+    fn firstPart(file: std.fs.File) ![]const u8 {
+        var buf_reader = std.io.bufferedReader(file.reader());
+        var stream = buf_reader.reader();
+
+        var buf: [1024]u8 = undefined;
+        while (try stream.readUntilDelimiterOrEof(&buf, '\n')) |line| {
+            for (line) |ch| {
+                const d = number.digit(ch);
+                if (d) |dd| {
+                    std.log.warn("dd: {d}", .{dd});
+                }
+            }
+        }
         return "bazinga!";
     }
 
-    fn secondPart() []const u8 {
+    fn secondPart(file: std.fs.File) ![]const u8 {
+        _ = file;
         return "sad trombone...";
     }
 
-    fn challenge(self: *Day) advent.Challenge {
+    fn challenge(self: *Day) Challenge {
         return .{
             .ptr = self,
             .src = @src(),
@@ -21,12 +35,6 @@ const Day = struct {
 };
 
 pub fn main() !void {
-    //const input =
-    //    \\1abc2
-    //    \\pqr3stu8vwx
-    //    \\a1b2c3d4e5f
-    //    \\treb7uchet
-    //;
     var day = Day{};
     const chall = day.challenge();
     try chall.solve();

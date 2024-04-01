@@ -4,8 +4,8 @@ pub const Challenge = struct {
     ptr: *anyopaque,
     src: std.builtin.SourceLocation,
 
-    firstPart: *const fn () []const u8,
-    secondPart: *const fn () []const u8,
+    firstPart: *const fn (std.fs.File) anyerror![]const u8,
+    secondPart: *const fn (std.fs.File) anyerror![]const u8,
 
     pub fn day(self: Challenge) []const u8 {
         return std.fs.path.stem(self.src.file);
@@ -36,7 +36,7 @@ pub const Challenge = struct {
         while (args.next()) |arg| {
             // Only support "--part 1/2" for now
             if (std.mem.eql(u8, arg, "--part")) {
-                const part = args.next() orelse break; // orelse part1 = true;
+                const part = args.next() orelse break;
                 if (std.mem.eql(u8, part, "2")) {
                     part1 = false;
                     break;
@@ -49,6 +49,7 @@ pub const Challenge = struct {
         const file = try self.resourceFile();
         defer file.close();
 
+        const solution: []const u8 = if (part1) try self.firstPart(file) else try self.secondPart(file);
         std.log.info("Solution for day {s} part {}: {s}", .{ self.day(), partNumber, solution });
     }
 };
