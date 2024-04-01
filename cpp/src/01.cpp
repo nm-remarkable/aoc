@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     namespace adv = advent::number;
 
     const int part = advent::challenge::parseArgs(argc, argv);
-    const std::function findDigits = part == 1 ? adv::findDigits : adv::findDigits;
+    const std::function findDigits = part == 1 ? adv::findDigits : adv::findNumbers;
 
     const std::optional<fs::path> filePath = advent::resources::getResource(1);
     if (filePath)
