@@ -8,7 +8,7 @@ namespace advent::number
 {
     std::optional<int> digit(char ch)
     {
-        if (ch >= '0' && ch <= '9')
+        if (ch >= '1' && ch <= '9')
         {
             return {ch - '0'};
         }
@@ -30,7 +30,7 @@ namespace advent::number
             startPos++;
         }
         startPos = len - 1;
-        while (startPos > 0)
+        while (startPos >= 0)
         {
             const std::optional<int> num = digit(s[startPos]);
             if (num)
