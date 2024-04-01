@@ -17,8 +17,10 @@ namespace fmt
         return std::vformat(str, std::make_format_args(args...));
     }
 
-    void println(const std::string &message)
+    template <typename... Args>
+    inline void println(const std::string str, Args &&...args)
     {
-        fmt::print("{}\n", message);
+        const std::string wArgs = std::vformat(str, std::make_format_args(args...));
+        fmt::print("{}\n", wArgs);
     }
 }
