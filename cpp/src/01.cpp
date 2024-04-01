@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         int sum = 0;
         while (std::getline(file, line))
         {
-            sum += adv::parseNumber(findDigits(line));
+            sum += adv::atoi(findDigits(line));
         }
         file.close();
         fmt::print("Sum: {}", sum);

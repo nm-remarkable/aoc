@@ -45,7 +45,7 @@ namespace advent::number
         return fmt::format("{}{}", left, right);
     }
 
-    int parseNumber(std::string s)
+    int atoi(std::string s)
     {
         int startPos = 0, n = 0, sign = 1;
         while (s[startPos] == ' ')

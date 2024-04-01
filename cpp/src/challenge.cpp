@@ -9,8 +9,8 @@ namespace advent::challenge
         int part = 1;
         if (argc > 1)
         {
-            if (advent::number::parseNumber(argv[1]) == 2                                        //
-                || (strcmp(argv[1], "--part") == 0 && advent::number::parseNumber(argv[2]) == 2) //
+            if (advent::number::atoi(argv[1]) == 2                                        //
+                || (strcmp(argv[1], "--part") == 0 && advent::number::atoi(argv[2]) == 2) //
             )
             {
                 part = 2;
