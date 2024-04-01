@@ -11,6 +11,20 @@ pub const Challenge = struct {
         return std.fs.path.stem(self.src.file);
     }
 
+    pub fn resourceFile(self: Challenge) !std.fs.File {
+        var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+        const allocator = gpa.allocator();
+        const relative_path = try std.fmt.allocPrint(
+            allocator,
+            "../resources/{s}/input.txt",
+            .{self.day()},
+        );
+        const file = try std.fs.cwd().openFile(relative_path, .{});
+        defer allocator.free(relative_path);
+
+        return file;
+    }
+
     pub fn solve(self: Challenge) anyerror!void {
         var gpa = std.heap.GeneralPurposeAllocator(.{}){};
         const allocator = gpa.allocator();
@@ -32,7 +46,9 @@ pub const Challenge = struct {
         const partNumber: u8 = if (part1) 1 else 2;
         std.log.info("Running advent day {s} part {}", .{ self.day(), partNumber });
 
-        const solution: []const u8 = if (part1) self.firstPart() else self.secondPart();
+        const file = try self.resourceFile();
+        defer file.close();
+
         std.log.info("Solution for day {s} part {}: {s}", .{ self.day(), partNumber, solution });
     }
 };
