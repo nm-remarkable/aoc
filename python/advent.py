@@ -1,6 +1,6 @@
 """Examples:
-    poetry run advent 00 --debug
-    python -m advent.py 01 --debug
+poetry run advent 00 --debug
+python -m advent.py 01 --debug
 """
 
 import argparse
