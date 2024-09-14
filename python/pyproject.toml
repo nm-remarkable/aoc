@@ -24,7 +24,6 @@ line-length = 88
 select = ["ALL"]
 
 ignore = ["D", "G004", "INP001", "ERA001"]
-
 target-version = "py311"
 
 [tool.ruff.mccabe]
