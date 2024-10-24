@@ -7,5 +7,5 @@ resources
 .ruff_cache
 
 # zig
-zig-cache
+**zig-cache
 zig-out

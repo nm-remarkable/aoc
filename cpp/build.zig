@@ -30,9 +30,7 @@ pub fn build(b: *std.Build) !void {
     });
     advent.linkLibCpp();
     advent.addCSourceFile(.{
-        .file = .{
-            .path = exePath,
-        },
+        .file = .{ .cwd_relative = exePath },
         .flags = &cppFlags,
     });
 

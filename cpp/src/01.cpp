@@ -1,6 +1,7 @@
 #include <filesystem>
 #include "lib/number.cpp"
 #include "lib/format.cpp"
+#include "lib/logger.cpp"
 #include "lib/resources.cpp"
 #include "challenge.cpp"
 #include <functional>
@@ -30,7 +31,12 @@ int main(int argc, char **argv)
             sum += adv::atoi(findDigits(line));
         }
         file.close();
-        fmt::print("Sum: {}", sum);
+        fmt::println("Sum: {}", sum);
+        SPDLOG_INFO("Sum: {}", sum);
+        SPDLOG_DEBUG("Sum: {}", sum);
+        SPDLOG_TRACE("Sum: {}", sum);
+        SPDLOG_ERROR("Sum: {}", sum);
+        SPDLOG_WARN("Sum: {}", sum);
     }
 
     return 0;
