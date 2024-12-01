@@ -16,8 +16,9 @@ pub fn openResourceFile() !std.fs.File {
 }
 
 pub const Challenge = struct {
-    firstPart: *const fn (std.fs.File) anyerror![]const u8,
-    secondPart: *const fn (std.fs.File) anyerror![]const u8,
+    allocator: std.mem.Allocator,
+    firstPart: *const fn (std.mem.Allocator, std.fs.File) anyerror!void,
+    secondPart: *const fn (std.mem.Allocator, std.fs.File) anyerror!void,
 
     pub fn solve(self: Challenge) anyerror!void {
         var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -37,11 +38,13 @@ pub const Challenge = struct {
                 }
             }
         }
-        const partNumber: u8 = if (part1) 1 else 2;
         const file = try openResourceFile();
         defer file.close();
 
-        const solution: []const u8 = if (part1) try self.firstPart(file) else try self.secondPart(file);
-        std.log.info("Solution for day {s} {s} part {}:\n\n{s}", .{ options.year, options.day, partNumber, solution });
+        if (part1) {
+            try self.firstPart(allocator, file);
+            return;
+        }
+        try self.secondPart(allocator, file);
     }
 };

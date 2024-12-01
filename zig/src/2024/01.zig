@@ -2,17 +2,62 @@ const std = @import("std");
 const chal = @import("lib").challenge;
 const number = @import("lib").number;
 
-fn firstPart(file: std.fs.File) ![]const u8 {
-    _ = file;
-    return "Not implemented";
+fn firstPart(allocator: std.mem.Allocator, file: std.fs.File) !void {
+    const stat = try file.stat();
+    const fsize = stat.size;
+
+    const file_content: [:0]u8 = try file.readToEndAllocOptions(allocator, fsize, fsize, @alignOf(u8), 0);
+    defer allocator.free(file_content);
+
+    var firstList = try std.ArrayListAligned(i32, @alignOf(i32)).initCapacity(allocator, 1000);
+    var secondList = try std.ArrayListAligned(i32, @alignOf(i32)).initCapacity(allocator, 1000);
+    defer firstList.deinit();
+    defer secondList.deinit();
+
+    var i: u64 = 0;
+    var which: bool = true;
+    var current: i32 = 0;
+    while (i < fsize) {
+        const char = file_content[i];
+        if (number.digit(char)) |d| {
+            current = current * 10 + d;
+        } else {
+            switch (char) {
+                ' ', '\n' => {
+                    if (current != 0) {
+                        if (which) try firstList.append(current) else try secondList.append(current);
+                        current = 0;
+                        which = !which; // Flip which list to add item to
+                    }
+                },
+                else => {},
+            }
+        }
+        i += 1;
+    }
+    std.mem.sort(i32, firstList.items, {}, comptime std.sort.asc(i32));
+    std.mem.sort(i32, secondList.items, {}, comptime std.sort.asc(i32));
+
+    var result: usize = 0;
+    for (firstList.items, secondList.items) |fi, si| {
+        result += @abs(si - fi);
+
+        std.log.debug("fi: {d}, si: {d}, res:{}", .{ fi, si, si - fi });
+    }
+    std.log.info("Result: {d}", .{result});
+
+    return;
 }
 
-fn secondPart(file: std.fs.File) ![]const u8 {
+fn secondPart(allocator: std.mem.Allocator, file: std.fs.File) !void {
     _ = file;
-    return "sad trombone...";
+    _ = allocator;
+    return;
 }
 
 pub fn main() !void {
-    const c: chal.Challenge = .{ .firstPart = firstPart, .secondPart = secondPart };
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const c: chal.Challenge = .{ .allocator = arena.allocator(), .firstPart = firstPart, .secondPart = secondPart };
     try c.solve();
 }
